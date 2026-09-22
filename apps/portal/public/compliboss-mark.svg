@@ -1,0 +1,7 @@
+<svg width="192" height="196" viewBox="0 0 192 196" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="CompliBoss">
+  <title>CompliBoss</title>
+  <path d="M96 20 L164 59 V137 L96 176 L28 137 V59 Z" fill="none" stroke="#0E2233" stroke-width="18" stroke-linejoin="round"/>
+  <path d="M64 100 L88 124 L134 74" fill="none" stroke="#0E2233" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M120 150 C150 150 168 128 168 100" fill="none" stroke="#1E6FFF" stroke-width="18" stroke-linecap="round"/>
+  <path d="M108 196 L150 172 L150 150 L108 174 Z" fill="#1E6FFF"/>
+</svg>

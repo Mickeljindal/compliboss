@@ -1,0 +1,158 @@
+# =============================================================================
+# CompliBoss — full production stack (self-hosted, local file storage)
+#
+#   docker compose -f docker-compose.prod.yml up -d --build
+#
+# Services: postgres, migrator (one-shot), api, app, portal, web.
+# Redis (Upstash) and Trigger.dev are external/optional — see .env.production.example.
+# Put per-service env in apps/api/.env, apps/app/.env, apps/portal/.env.
+# =============================================================================
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: '10m'
+    max-file: '5'
+
+volumes:
+  postgres-data:
+  # Persistent local file storage — MUST outlive containers or uploads are lost.
+  compliboss-uploads:
+  # MinIO object storage (S3-compatible) — the recommended self-hosted store.
+  minio-data:
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: compliboss
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me}
+      POSTGRES_DB: compliboss
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U compliboss']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    logging: *default-logging
+
+  # -------------------------------------------------------------------------
+  # MinIO — self-hosted, S3-compatible object storage. This is what makes file
+  # storage work for BOTH the API and the Next.js apps without AWS. Point the
+  # APP_AWS_* env at it (APP_AWS_ENDPOINT=http://minio:9000). Files live on the
+  # persistent minio-data volume, on your own server. Swap to real AWS S3 later
+  # by changing env only. (If you truly want no object store, set
+  # STORAGE_DRIVER=local instead — but note the web apps' upload/logo features
+  # then need to route through the API.)
+  # -------------------------------------------------------------------------
+  minio:
+    image: minio/minio:latest
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-compliboss}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-change_me_min_8_chars}
+    volumes:
+      - minio-data:/data
+    ports:
+      - '9000:9000'   # S3 API
+      - '9001:9001'   # web console
+    healthcheck:
+      test: ['CMD', 'mc', 'ready', 'local']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    logging: *default-logging
+
+  # One-shot: create the buckets the app expects, then exit.
+  minio-setup:
+    image: minio/mc:latest
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      mc alias set local http://minio:9000 ${MINIO_ROOT_USER:-compliboss} ${MINIO_ROOT_PASSWORD:-change_me_min_8_chars} &&
+      mc mb -p local/compliboss-uploads local/compliboss-org-assets local/compliboss-knowledge-base local/compliboss-questionnaire || true
+      "
+    restart: 'no'
+    logging: *default-logging
+
+  migrator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: migrator
+    env_file: [apps/api/.env]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: 'no'
+    logging: *default-logging
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile.multistage
+      target: production
+    ports: ['3333:3333']
+    env_file: [apps/api/.env]
+    volumes:
+      # Mount the persistent volume where STORAGE_DRIVER=local writes files.
+      # Must match LOCAL_STORAGE_DIR in apps/api/.env.
+      - compliboss-uploads:/var/lib/compliboss/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrator:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ['CMD', 'wget', '--spider', '-q', 'http://localhost:3333/v1/health']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+    logging: *default-logging
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: app
+      args:
+        NEXT_PUBLIC_BETTER_AUTH_URL: ${BETTER_AUTH_URL}
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_PORTAL_URL: ${NEXT_PUBLIC_PORTAL_URL}
+    ports: ['3000:3000']
+    env_file: [apps/app/.env]
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+    logging: *default-logging
+
+  portal:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: portal
+      args:
+        NEXT_PUBLIC_BETTER_AUTH_URL: ${BETTER_AUTH_URL_PORTAL}
+    ports: ['3002:3000']
+    env_file: [apps/portal/.env]
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+    logging: *default-logging
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      target: web
+    ports: ['3005:3005']
+    restart: unless-stopped
+    logging: *default-logging

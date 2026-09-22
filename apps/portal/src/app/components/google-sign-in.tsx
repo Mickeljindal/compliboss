@@ -1,0 +1,61 @@
+'use client';
+
+import { authClient } from '@/app/lib/auth-client';
+import { Button } from '@trycompai/ui/button';
+import { Icons } from '@trycompai/ui/icons';
+import { Spinner } from '@trycompai/design-system';
+import { useState } from 'react';
+
+export function GoogleSignIn({
+  inviteCode,
+  searchParams,
+}: {
+  inviteCode?: string;
+  searchParams?: URLSearchParams;
+}) {
+  const [isLoading, setLoading] = useState(false);
+
+  const handleSignIn = async () => {
+    setLoading(true);
+
+    // Build the callback URL with search params
+    const baseURL = window.location.origin;
+    const isDeviceAuth = searchParams?.get('device_auth') === 'true';
+    const path = isDeviceAuth
+      ? '/auth/device-callback'
+      : inviteCode
+        ? `/invite/${inviteCode}`
+        : '/';
+    const redirectTo = new URL(path, baseURL);
+
+    // Append all search params if they exist
+    if (searchParams) {
+      searchParams.forEach((value, key) => {
+        redirectTo.searchParams.append(key, value);
+      });
+    }
+
+    await authClient.signIn.social({
+      provider: 'google',
+      callbackURL: redirectTo.toString(),
+    });
+  };
+
+  return (
+    <Button
+      onClick={handleSignIn}
+      className="w-full h-11 font-medium"
+      variant="outline"
+      disabled={isLoading}
+    >
+      {isLoading ? (
+        <Spinner size="sm" />
+      ) : (
+        <>
+          <Icons.Google className="h-4 w-4" />
+          Continue with Google
+        </>
+      )}
+    </Button>
+  );
+}

@@ -1,0 +1,34 @@
+/**
+ * CompliBoss brand token overrides (portal).
+ *
+ * Must be imported AFTER @trycompai/design-system/globals.css in the portal
+ * layout so these values win. See apps/app/src/styles/brand.css for details.
+ *
+ * Brand palette (from the CompliBoss logo):
+ *   - Brand blue  #1E6FFF  ->  hsl(218 100% 56%)
+ *   - Ink / navy  #0E2233  ->  hsl(208 57% 13%)
+ */
+
+:root {
+  --primary: 218 100% 56%;
+  --primary-foreground: 0 0% 100%;
+  --ring: 218 100% 56%;
+  --chart-primary: 218 100% 56%;
+
+  --brand-blue: 218 100% 56%;
+  --brand-blue-hex: #1e6fff;
+  --brand-navy: 208 57% 13%;
+  --brand-navy-hex: #0e2233;
+}
+
+.dark {
+  --primary: 218 100% 62%;
+  --primary-foreground: 208 57% 13%;
+  --ring: 218 100% 62%;
+  --chart-primary: 218 100% 62%;
+
+  --brand-blue: 218 100% 62%;
+  --brand-blue-hex: #4d8bff;
+  --brand-navy: 208 57% 13%;
+  --brand-navy-hex: #0e2233;
+}

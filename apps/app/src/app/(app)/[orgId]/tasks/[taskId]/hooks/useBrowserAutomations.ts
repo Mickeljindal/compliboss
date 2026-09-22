@@ -1,0 +1,134 @@
+'use client';
+
+import { apiClient } from '@/lib/api-client';
+import type { TaskFrequency } from '@db';
+import { useCallback, useState } from 'react';
+import { toast } from 'sonner';
+import type { BrowserAutomation } from './types';
+
+interface UseBrowserAutomationsOptions {
+  taskId: string;
+}
+
+interface AutomationConfigInput {
+  name: string;
+  targetUrl: string;
+  instruction: string;
+  evaluationCriteria?: string;
+  scheduleFrequency?: TaskFrequency;
+}
+
+export function useBrowserAutomations({ taskId }: UseBrowserAutomationsOptions) {
+  const [automations, setAutomations] = useState<BrowserAutomation[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const fetchAutomations = useCallback(async () => {
+    try {
+      const res = await apiClient.get<BrowserAutomation[]>(
+        `/v1/browserbase/automations/task/${taskId}`,
+      );
+      if (res.data) {
+        setAutomations(res.data);
+      }
+    } catch {
+      // Ignore
+    } finally {
+      setIsLoading(false);
+    }
+  }, [taskId]);
+
+  const createAutomation = useCallback(
+    async (input: AutomationConfigInput) => {
+      setIsSaving(true);
+      try {
+        const res = await apiClient.post<BrowserAutomation>(
+          '/v1/browserbase/automations',
+          { taskId, ...input },
+        );
+        if (res.error) throw new Error(res.error);
+
+        toast.success('Browser automation created');
+        await fetchAutomations();
+        return true;
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : 'Failed to create automation');
+        return false;
+      } finally {
+        setIsSaving(false);
+      }
+    },
+    [taskId, fetchAutomations],
+  );
+
+  const updateAutomation = useCallback(
+    async ({
+      automationId,
+      input,
+    }: {
+      automationId: string;
+      input: AutomationConfigInput;
+    }) => {
+      setIsSaving(true);
+      try {
+        const res = await apiClient.patch<BrowserAutomation>(
+          `/v1/browserbase/automations/${automationId}`,
+          input,
+        );
+        if (res.error) throw new Error(res.error);
+
+        toast.success('Browser automation updated');
+        await fetchAutomations();
+        return true;
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : 'Failed to update automation');
+        return false;
+      } finally {
+        setIsSaving(false);
+      }
+    },
+    [fetchAutomations],
+  );
+
+  const deleteAutomation = useCallback(
+    async (automationId: string) => {
+      try {
+        const res = await apiClient.delete(`/v1/browserbase/automations/${automationId}`);
+        if (res.error) throw new Error(res.error);
+        toast.success('Browser automation deleted');
+        await fetchAutomations();
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : 'Failed to delete automation');
+      }
+    },
+    [fetchAutomations],
+  );
+
+  const toggleAutomation = useCallback(
+    async (automationId: string, isEnabled: boolean) => {
+      try {
+        const res = await apiClient.patch<BrowserAutomation>(
+          `/v1/browserbase/automations/${automationId}`,
+          { isEnabled },
+        );
+        if (res.error) throw new Error(res.error);
+        toast.success(isEnabled ? 'Automation enabled' : 'Automation disabled');
+        await fetchAutomations();
+      } catch (err) {
+        toast.error(err instanceof Error ? err.message : 'Failed to update automation');
+      }
+    },
+    [fetchAutomations],
+  );
+
+  return {
+    automations,
+    isLoading,
+    isSaving,
+    fetchAutomations,
+    createAutomation,
+    updateAutomation,
+    deleteAutomation,
+    toggleAutomation,
+  };
+}

@@ -1,0 +1,62 @@
+@import 'tailwindcss';
+
+/*
+ * CompliBoss marketing theme (Tailwind v4).
+ * Palette from the brand logo:
+ *   brand blue #1E6FFF · deep navy #0E2233
+ * Design direction: Huly-style dark hero + glow, Scrut-style clean sections.
+ */
+@theme {
+  --color-brand: #22c67d;
+  --color-brand-soft: #33d0d8;
+  --color-navy: #0e2233;
+  --color-navy-800: #12293d;
+  --color-ink: #0a1622;
+  --color-mist: #f5f8ff;
+
+  --font-sans:
+    var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: #e8eef6;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Radial brand glow used behind the hero. */
+.brand-glow {
+  background:
+    radial-gradient(
+      60% 50% at 50% 0%,
+      rgb(37 208 124 / 0.26) 0%,
+      rgb(16 180 230 / 0.10) 45%,
+      transparent 75%
+    );
+}
+
+/* Subtle grid backdrop. */
+.grid-backdrop {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.04) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(70% 60% at 50% 0%, black, transparent 80%);
+}
+
+.text-gradient {
+  background: linear-gradient(180deg, #ffffff 0%, #b6f0dd 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}

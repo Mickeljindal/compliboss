@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CompliBoss — Internal Pricing Model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  :root{--ink:#0e2233;--muted:#5b6b7c;--line:#e6ecf3;--green:#22c67d;--cyan:#12b4e6;--mist:#f5f8fb;--grad:linear-gradient(90deg,#22c67d,#12b4e6);--amber:#b45309;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;background:#eef2f6;color:var(--ink);-webkit-font-smoothing:antialiased;padding:28px 14px}
+  .sheet{max-width:900px;margin:0 auto;background:#fff;border-radius:16px;box-shadow:0 10px 40px rgba(14,34,51,.10);overflow:hidden}
+  .top{padding:30px 40px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand svg{width:36px;height:36px}
+  .wm{font-size:23px;font-weight:800;letter-spacing:-.02em}
+  .wm .c{color:var(--ink)} .wm .b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .conf{background:#fff4e5;color:var(--amber);font-weight:800;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;border-radius:999px;border:1px solid #f5d9a8}
+  .body{padding:26px 40px 36px}
+  h1{font-size:20px;margin-bottom:4px}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:22px}
+  h2{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:26px 0 12px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:9px 10px;border-bottom:2px solid var(--line)}
+  th.r,td.r{text-align:right}
+  td{padding:11px 10px;border-bottom:1px solid var(--line)}
+  tbody tr:hover{background:#fafcfe}
+  .name{font-weight:700}
+  .cost{color:var(--muted)}
+  .price{font-weight:800}
+  .price span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .pill{display:inline-block;font-size:10px;font-weight:700;color:var(--green);background:#e7f8ef;border-radius:6px;padding:1px 7px;margin-left:6px}
+  .box{background:var(--mist);border-radius:12px;padding:20px 22px;margin-top:8px}
+  .box h3{font-size:14px;margin-bottom:12px}
+  .totrow{display:flex;justify-content:space-between;padding:7px 0;font-size:14px;border-bottom:1px dashed #d8e2ec}
+  .totrow.big{font-weight:800;font-size:16px;border-bottom:none;padding-top:12px}
+  .totrow.big .v{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .note{font-size:12px;color:var(--muted);line-height:1.7;margin-top:20px}
+  .note b{color:var(--ink)}
+  .formula{display:inline-block;background:#eef7f2;border:1px solid #cdeede;color:#0f6b45;font-weight:700;font-size:12px;padding:4px 10px;border-radius:8px}
+  @media print{body{background:#fff;padding:0}.sheet{box-shadow:none;border-radius:0}}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="top">
+    <div class="brand">
+      <svg viewBox="0 0 120 120" fill="none"><defs><linearGradient id="g" x1="30" y1="82" x2="94" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#22c67d"/><stop offset="1" stop-color="#12b4e6"/></linearGradient></defs>
+      <path d="M92 86 A44 44 0 1 1 92 34" stroke="#0E2233" stroke-width="13" stroke-linecap="round"/>
+      <path d="M37 62 L55 80 L92 32" stroke="url(#g)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="wm"><span class="c">compli</span><span class="b">boss</span></span>
+    </div>
+    <span class="conf">Internal — Confidential</span>
+  </div>
+
+  <div class="body">
+    <h1>Pricing model &amp; margin</h1>
+    <div class="sub">White-label cost (paid to platform vendor) vs. your resale price at a 50% gross margin. For companies up to 10 employees.</div>
+    <div class="formula">50% gross margin &nbsp;→&nbsp; Your price = White-label cost × 2</div>
+
+    <h2>Per-line pricing</h2>
+    <table>
+      <thead>
+        <tr><th>Item</th><th class="r">Your cost (USD)</th><th class="r">Your price @ 50% margin</th><th class="r">Your margin</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="name">Base platform (white-label + custom domain)</td><td class="r cost">$2,500</td><td class="r price"><span>$5,000</span></td><td class="r">$2,500</td></tr>
+        <tr><td class="name">SOC 2 (Type I / II)</td><td class="r cost">$2,500</td><td class="r price"><span>$5,000</span></td><td class="r">$2,500</td></tr>
+        <tr><td class="name">ISO 27001</td><td class="r cost">$2,500</td><td class="r price"><span>$5,000</span></td><td class="r">$2,500</td></tr>
+        <tr><td class="name">GDPR</td><td class="r cost">$2,500</td><td class="r price"><span>$5,000</span></td><td class="r">$2,500</td></tr>
+        <tr><td class="name">HIPAA</td><td class="r cost">$2,500</td><td class="r price"><span>$5,000</span></td><td class="r">$2,500</td></tr>
+        <tr><td class="name">SOC 2 / ISO 27001 <span class="pill">additional framework</span></td><td class="r cost">$1,500</td><td class="r price"><span>$3,000</span></td><td class="r">$1,500</td></tr>
+        <tr><td class="name">GDPR / HIPAA <span class="pill">additional framework</span></td><td class="r cost">$1,250</td><td class="r price"><span>$2,500</span></td><td class="r">$1,250</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Example bundle — Kahu Logic (SOC 2 + ISO 27001 + GDPR)</h2>
+    <div class="box">
+      <div class="totrow"><span>Base platform</span><span>cost $2,500 &nbsp;→&nbsp; price $5,000</span></div>
+      <div class="totrow"><span>SOC 2 (first framework)</span><span>cost $2,500 &nbsp;→&nbsp; price $5,000</span></div>
+      <div class="totrow"><span>ISO 27001 (additional)</span><span>cost $1,500 &nbsp;→&nbsp; price $3,000</span></div>
+      <div class="totrow"><span>GDPR (additional)</span><span>cost $1,250 &nbsp;→&nbsp; price $2,500</span></div>
+      <div class="totrow"><span>Your total cost</span><span>$7,750</span></div>
+      <div class="totrow big"><span>Client price (50% margin)</span><span class="v">$15,500</span></div>
+      <div class="totrow"><span>Your margin</span><span>$7,750</span></div>
+    </div>
+    <div class="note">
+      <b>Simpler alternative:</b> price every framework flat at $5,000 (as in the Kahu quote) → client pays <b>$15,000</b>, your cost $7,750, margin <b>$7,250 (~48%)</b>. Cleaner to quote, essentially the same margin.
+    </div>
+
+    <h2>Auditor fees — pass-through (not your margin)</h2>
+    <table>
+      <thead><tr><th>Framework</th><th>Audit mandatory?</th><th class="r">External auditor fee (USD)</th></tr></thead>
+      <tbody>
+        <tr><td class="name">SOC 2</td><td>Yes</td><td class="r cost">$1,200 – $1,500</td></tr>
+        <tr><td class="name">ISO 27001</td><td>Yes</td><td class="r cost">$1,500</td></tr>
+        <tr><td class="name">GDPR</td><td>No</td><td class="r cost">$1,500 (gap assessment)</td></tr>
+        <tr><td class="name">HIPAA</td><td>No</td><td class="r cost">$1,500 (gap assessment)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <b>Notes.</b> Auditor / certification-body fees are charged by the independent audit firm and are billed to the client separately (pass-through at cost, or add a small handling margin) — keep them out of the platform price. &nbsp;•&nbsp; Pricing assumes companies up to 10 employees; add tiers for larger orgs. &nbsp;•&nbsp; "Separate DB: No" in the vendor plan — all white-label clients share the platform DB (isolated by org); offer a dedicated-DB tier as an enterprise upsell. &nbsp;•&nbsp; Figures exclude GST/taxes.
+    </div>
+  </div>
+</div>
+</body>
+</html>

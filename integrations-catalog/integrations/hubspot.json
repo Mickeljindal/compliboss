@@ -1,0 +1,45 @@
+{
+  "slug": "hubspot",
+  "name": "HubSpot",
+  "description": "Monitor HubSpot user access and contact owners for CRM compliance and access management",
+  "category": "Productivity",
+  "docsUrl": "https://developers.hubspot.com/docs/api/overview",
+  "baseUrl": "https://api.hubapi.com/",
+  "authConfig": {
+    "type": "custom",
+    "config": {
+      "setupInstructions": "1. Log in to HubSpot as a Super Admin\n2. Go to Development (left sidebar)\n3. Click Keys > Service keys\n4. Click \"Create service key\" in the top right\n5. Name your key (e.g. \"CompAI\")\n6. Click \"Add new scope\" and select: settings.users.read, crm.objects.owners.read\n7. Click Update, then Create\n8. Copy the service key and paste it below\n\nNote: If you still see Private Apps instead of Service Keys, go to Development > Legacy apps and create a legacy private app with the same scopes.",
+      "credentialFields": [
+        {
+          "label": "Service Key",
+          "type": "password",
+          "required": true,
+          "helpText": "Create a Service Key in HubSpot > Development > Keys > Service keys"
+        }
+      ]
+    }
+  },
+  "capabilities": [
+    "checks"
+  ],
+  "supportsMultipleConnections": false,
+  "syncSupported": false,
+  "checks": [
+    {
+      "slug": "user_access",
+      "name": "Employee Access",
+      "description": "Reviews HubSpot users to verify employee access management",
+      "defaultSeverity": "medium",
+      "enabled": true
+    },
+    {
+      "slug": "contact_owners",
+      "name": "Contact Information",
+      "description": "Lists HubSpot CRM contact owners for contact information compliance",
+      "defaultSeverity": "low",
+      "enabled": true
+    }
+  ],
+  "checkCount": 2,
+  "isActive": true
+}

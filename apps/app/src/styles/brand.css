@@ -1,0 +1,46 @@
+/**
+ * CompliBoss brand token overrides.
+ *
+ * These override the design tokens shipped by @trycompai/design-system at
+ * runtime. This file MUST be imported AFTER the design-system stylesheet in the
+ * app layout so these values win (equal specificity, later wins).
+ *
+ * Brand palette (from the CompliBoss logo):
+ *   - Brand blue  #1E6FFF  ->  hsl(218 100% 56%)   ("Boss" + accent swoosh)
+ *   - Ink / navy  #0E2233  ->  hsl(208 57% 13%)    (mark + "Compli")
+ *
+ * Tokens are shadcn-style HSL triplets consumed via hsl(var(--token)).
+ */
+
+:root {
+  /* Primary accent -> CompliBoss blue */
+  --primary: 218 100% 56%;
+  --primary-foreground: 0 0% 100%;
+
+  /* Focus ring matches the accent */
+  --ring: 218 100% 56%;
+
+  /* Charts / data-viz primary */
+  --chart-primary: 218 100% 56%;
+  --chart-other: 218 100% 56%;
+  --chart-pending: #1e6fff;
+
+  /* Raw brand tokens for bespoke UI (sidebars, gradients, marketing embeds) */
+  --brand-blue: 218 100% 56%;
+  --brand-blue-hex: #1e6fff;
+  --brand-navy: 208 57% 13%;
+  --brand-navy-hex: #0e2233;
+}
+
+.dark {
+  --primary: 218 100% 62%;
+  --primary-foreground: 208 57% 13%;
+  --ring: 218 100% 62%;
+  --chart-primary: 218 100% 62%;
+  --chart-other: 218 100% 62%;
+
+  --brand-blue: 218 100% 62%;
+  --brand-blue-hex: #4d8bff;
+  --brand-navy: 208 57% 13%;
+  --brand-navy-hex: #0e2233;
+}
