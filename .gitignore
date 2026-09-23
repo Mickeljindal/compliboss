@@ -68,8 +68,7 @@ playground/
 .playground/
 .venv
 
-# Ignore lock files to prevent conflicts between different package managers
-bun.lock
+# bun.lock is committed for reproducible Docker/production builds (Dockerfile COPYs it).
 yarn.lock
 
 # Playwright test results and reports
