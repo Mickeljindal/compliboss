@@ -10,8 +10,8 @@
 <style>
   :root{
     --ink:#0e2233; --muted:#5b6b7c; --line:#e6ecf3;
-    --green:#22c67d; --cyan:#12b4e6; --mist:#f5f8fb;
-    --grad:linear-gradient(90deg,#22c67d,#12b4e6);
+    --green:#16a46b; --cyan:#12b4e6; --mist:#f5f8fb;
+    --accent:#16a46b;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#eef2f6;color:var(--ink);-webkit-font-smoothing:antialiased;padding:32px 16px}
@@ -21,28 +21,43 @@
   .brand svg{width:40px;height:40px}
   .wm{font-size:26px;font-weight:800;letter-spacing:-.02em}
   .wm .c{color:var(--ink)}
-  .wm .b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .wm .b{color:var(--accent)}
   .tag{margin-top:6px;font-size:10px;font-weight:700;letter-spacing:.28em;color:var(--muted)}
   .doc-meta{text-align:right;font-size:13px;color:var(--muted);line-height:1.7}
   .doc-meta b{color:var(--ink)}
-  .quote-badge{display:inline-block;background:var(--grad);color:#04121e;font-weight:800;font-size:12px;letter-spacing:.12em;padding:6px 14px;border-radius:999px;text-transform:uppercase}
+  .quote-badge{display:inline-block;background:var(--accent);color:#fff;font-weight:800;font-size:12px;letter-spacing:.12em;padding:6px 14px;border-radius:999px;text-transform:uppercase}
   .parties{padding:28px 44px;display:grid;grid-template-columns:1fr 1fr;gap:28px;border-bottom:1px solid var(--line)}
   .parties h4{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:8px}
   .parties p{font-size:14px;line-height:1.6}
   .parties b{font-size:15px}
   .body{padding:32px 44px}
   h2{font-size:15px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:14px}
+  h2.mt{margin-top:38px}
+  .lead{font-size:14px;color:#33465a;line-height:1.65;margin-bottom:20px}
   table{width:100%;border-collapse:collapse;font-size:14px}
   thead th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding:10px 12px;border-bottom:2px solid var(--line)}
   thead th.r,tbody td.r{text-align:right}
-  tbody td{padding:16px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th.c,tbody td.c{text-align:center}
+  tbody td{padding:15px 12px;border-bottom:1px solid var(--line);vertical-align:top}
   .item-name{font-weight:700;font-size:15px}
   .item-desc{color:var(--muted);font-size:12.5px;line-height:1.55;margin-top:4px;max-width:440px}
   .price{font-weight:700;white-space:nowrap}
-  .totals{margin-top:20px;margin-left:auto;width:300px;font-size:14px}
-  .totals .row{display:flex;justify-content:space-between;padding:8px 12px}
-  .totals .grand{background:var(--mist);border-radius:10px;font-weight:800;font-size:17px;padding:14px 12px;margin-top:6px}
-  .totals .grand span:last-child{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  /* recommended bundle callout */
+  .reco{margin-top:6px;background:#f4faf7;border:1.5px solid #cfe6db;border-radius:14px;padding:22px 24px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+  .reco .l .k{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+  .reco .l .t{font-size:18px;font-weight:800;margin-top:4px}
+  .reco .l .d{font-size:12.5px;color:var(--muted);margin-top:4px;max-width:430px;line-height:1.55}
+  .reco .r{text-align:right}
+  .reco .r .amt{font-size:30px;font-weight:900;color:var(--ink);line-height:1}
+  .reco .r .u{font-size:11px;color:var(--muted);margin-top:6px}
+  /* tier table highlight */
+  tr.best td{background:#f2fbf7}
+  .pill{display:inline-block;background:var(--accent);color:#fff;font-weight:800;font-size:9.5px;letter-spacing:.1em;padding:3px 8px;border-radius:999px;text-transform:uppercase;margin-left:8px;vertical-align:middle}
+  .allin{margin-top:22px;background:var(--ink);color:#fff;border-radius:14px;padding:22px 26px;display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+  .allin .k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#9fb3c4;font-weight:700}
+  .allin .t{font-size:15px;font-weight:700;margin-top:3px}
+  .allin .amt{font-size:26px;font-weight:900}
+  .allin .amt span{color:#4bd39e}
   .incl{margin-top:34px;background:var(--mist);border-radius:12px;padding:22px 24px}
   .incl h3{font-size:14px;margin-bottom:12px}
   .incl ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px 22px}
@@ -52,9 +67,9 @@
   .terms b{color:var(--ink)}
   .foot{padding:24px 44px 40px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
   .foot .sig{font-size:12px;color:var(--muted)}
-  .cta{background:var(--grad);color:#04121e;font-weight:800;font-size:14px;padding:12px 22px;border-radius:999px;text-decoration:none}
+  .cta{background:var(--accent);color:#fff;font-weight:800;font-size:14px;padding:12px 22px;border-radius:999px;text-decoration:none}
   @media print{body{background:#fff;padding:0}.sheet{box-shadow:none;border-radius:0;max-width:100%}.cta{display:none}}
-  @media(max-width:640px){.parties,.incl ul{grid-template-columns:1fr}.body,.top,.parties,.foot{padding-left:24px;padding-right:24px}}
+  @media(max-width:640px){.parties,.incl ul{grid-template-columns:1fr}.body,.top,.parties,.foot{padding-left:24px;padding-right:24px}.reco,.allin{flex-direction:column;align-items:flex-start}.reco .r{text-align:left}}
 </style>
 </head>
 <body>
@@ -64,9 +79,8 @@
     <div>
       <div class="brand">
         <svg viewBox="0 0 120 120" fill="none" aria-hidden="true">
-          <defs><linearGradient id="g" x1="30" y1="82" x2="94" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#22c67d"/><stop offset="1" stop-color="#12b4e6"/></linearGradient></defs>
           <path d="M92 86 A44 44 0 1 1 92 34" stroke="#0E2233" stroke-width="13" stroke-linecap="round"/>
-          <path d="M37 62 L55 80 L92 32" stroke="url(#g)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M37 62 L55 80 L92 32" stroke="#16a46b" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         <span class="wm"><span class="c">compli</span><span class="b">boss</span></span>
       </div>
@@ -74,69 +88,115 @@
     </div>
     <div class="doc-meta">
       <div class="quote-badge">Quotation</div>
-      <div style="margin-top:12px">Quote #: <b>CB-2026-KL-001</b></div>
-      <div>Date: <b>[DATE]</b></div>
-      <div>Valid until: <b>[DATE + 30 days]</b></div>
+      <div style="margin-top:12px">Quote #: <b>CB-2026-KL-232</b></div>
+      <div>Date: <b>22nd September, 2026</b></div>
+      <div>Valid until: <b>22nd October, 2026</b></div>
     </div>
   </div>
 
   <div class="parties">
     <div>
       <h4>From</h4>
-      <p><b>CompliBoss</b><br/>[Company legal name / ABN]<br/>[Address], Australia<br/>hello@compliboss.com</p>
+      <p><b>CompliBoss</b><br/>Secured Orbis Private Limited<br/>Ludhiana, Punjab, India<br/>hello@compliboss.com</p>
     </div>
     <div>
       <h4>Prepared for</h4>
-      <p><b>Kahu Logic</b><br/>[Contact name]<br/>[Email]<br/>[Address]</p>
+      <p><b>Kahu Logic</b><br/>Rajesh<br/>Christchurch, New Zealand<br/>hello@kahulogic.com</p>
     </div>
   </div>
 
   <div class="body">
-    <h2>Scope of engagement</h2>
+    <h2>Recommended engagement</h2>
+    <p class="lead">SOC&nbsp;2, ISO&nbsp;27001 and GDPR share the same underlying controls and evidence. Running all three together on CompliBoss is the most cost-effective path — you collect evidence once and map it across every framework, which is why the per-framework price is lowest when all three are taken together.</p>
+
+    <div class="reco">
+      <div class="l">
+        <div class="k">Best value · all three frameworks</div>
+        <div class="t">SOC 2 + ISO 27001 + GDPR — platform &amp; continuous monitoring</div>
+        <div class="d">$5,000 per framework when all three are taken together. 12-month term, continuous monitoring, and auditor-ready evidence for each framework.</div>
+      </div>
+      <div class="r">
+        <div class="amt">$15,000</div>
+        <div class="u">USD · 3 × $5,000 · platform only</div>
+      </div>
+    </div>
+
+    <h2 class="mt">Framework pricing — how it scales</h2>
+    <p class="lead">The CompliBoss platform price per framework depends on how many frameworks you run together. Fewer frameworks carry a higher implementation cost because evidence and controls can no longer be shared as broadly.</p>
     <table>
       <thead>
         <tr>
-          <th>Framework &amp; service</th>
-          <th class="r">Qty</th>
-          <th class="r">Unit (USD)</th>
-          <th class="r">Amount (USD)</th>
+          <th>Frameworks selected</th>
+          <th class="c">Price per framework</th>
+          <th class="r">Platform total (USD)</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>
-            <div class="item-name">SOC 2 — Compliance automation &amp; continuous monitoring</div>
-            <div class="item-desc">Control mapping, automated evidence collection, policies, Trust Center, and 24/7 continuous monitoring across the Trust Services Criteria; auditor-ready evidence package.</div>
+            <div class="item-name">1 framework</div>
+            <div class="item-desc">Single framework (SOC 2, ISO 27001 or GDPR). Implementation cost is +$1,500 over the bundled rate.</div>
           </td>
-          <td class="r">1</td>
-          <td class="r">$5,000</td>
-          <td class="r price">$5,000</td>
+          <td class="c price">$6,500</td>
+          <td class="r price">$6,500</td>
         </tr>
         <tr>
           <td>
-            <div class="item-name">ISO 27001 — Compliance automation &amp; continuous monitoring</div>
-            <div class="item-desc">ISMS setup, Annex A control coverage, risk register &amp; treatment, Statement of Applicability, and continuous monitoring; reuses the shared evidence base.</div>
+            <div class="item-name">2 frameworks</div>
+            <div class="item-desc">Any two frameworks together. Implementation cost is +$1,000 per framework over the bundled rate.</div>
           </td>
-          <td class="r">1</td>
-          <td class="r">$5,000</td>
-          <td class="r price">$5,000</td>
+          <td class="c price">$6,000</td>
+          <td class="r price">$12,000</td>
         </tr>
-        <tr>
+        <tr class="best">
           <td>
-            <div class="item-name">GDPR — Compliance automation &amp; continuous monitoring</div>
-            <div class="item-desc">Records of processing, data-subject &amp; DPIA workflows, sub-processor/vendor management, and continuous monitoring mapped to GDPR articles.</div>
+            <div class="item-name">3 frameworks <span class="pill">Best value</span></div>
+            <div class="item-desc">SOC 2 + ISO 27001 + GDPR together. Bundled rate — lowest cost per framework.</div>
           </td>
-          <td class="r">1</td>
-          <td class="r">$5,000</td>
-          <td class="r price">$5,000</td>
+          <td class="c price">$5,000</td>
+          <td class="r price">$15,000</td>
         </tr>
       </tbody>
     </table>
 
-    <div class="totals">
-      <div class="row"><span>Subtotal</span><span>$15,000</span></div>
-      <div class="row"><span>Discount</span><span>$0</span></div>
-      <div class="row grand"><span>Total (USD)</span><span>$15,000</span></div>
+    <h2 class="mt">Independent audit / certification (billed by the audit partner)</h2>
+    <p class="lead">The formal audit is performed by <b>Percilchofe CPA LLC</b>, an independent AICPA-accredited audit firm — not by CompliBoss. We coordinate the audit and hand the auditor a complete, auditor-ready evidence package, which keeps their time (and their fee) to a minimum. Audit fees are paid directly to Percilchofe CPA LLC and are separate from the platform price above.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Certification</th>
+          <th>Audit partner</th>
+          <th class="r">Auditor fee per certification (USD)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="item-name">SOC 2 (Type I / II)</div></td>
+          <td class="item-desc" style="padding-top:16px">Percilchofe CPA LLC · AICPA-accredited</td>
+          <td class="r price">$2,500</td>
+        </tr>
+        <tr>
+          <td><div class="item-name">ISO 27001</div></td>
+          <td class="item-desc" style="padding-top:16px">Percilchofe CPA LLC</td>
+          <td class="r price">$2,500</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="item-name">GDPR</div>
+            <div class="item-desc">Independent GDPR audit &amp; attestation performed by Percilchofe CPA LLC.</div>
+          </td>
+          <td class="item-desc" style="padding-top:16px">Percilchofe CPA LLC</td>
+          <td class="r price">$2,500</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="allin">
+      <div>
+        <div class="k">All-in investment · all three frameworks</div>
+        <div class="t">Platform ($15,000) + independent audit by Percilchofe CPA LLC for 3 certifications (3 × $2,500 = $7,500)</div>
+      </div>
+      <div class="amt"><span>$22,500</span></div>
     </div>
 
     <div class="incl">
@@ -149,23 +209,23 @@
         <li>Tamper-evident, timestamped evidence with integrity checks</li>
         <li>Trust Center to share posture with prospects</li>
         <li>Guided onboarding &amp; readiness review</li>
-        <li>Email &amp; onboarding support</li>
+        <li>Audit coordination with the certification body</li>
       </ul>
     </div>
 
     <div class="terms">
       <p><b>Notes &amp; terms</b></p>
-      <p>• Pricing is per framework as listed and covers the CompliBoss platform, continuous monitoring, and onboarding for a 12-month term.</p>
-      <p>• Third-party independent audit / certification body fees (the external auditor who issues the SOC 2 report or ISO 27001 certificate) are <b>not included</b> and are billed separately by the audit firm.</p>
+      <p>• Platform pricing covers the CompliBoss platform, continuous monitoring, and onboarding for a 12-month term. No discount is applied; the per-framework rate simply scales with the number of frameworks selected.</p>
+      <p>• <b>1 framework:</b> $6,500 (implementation +$1,500). &nbsp;<b>2 frameworks:</b> $6,000 each / $12,000 (implementation +$1,000 per framework). &nbsp;<b>3 frameworks:</b> $5,000 each / $15,000 (bundled rate).</p>
+      <p>• Independent audit / certification fees ($2,500 per certification) are billed directly by <b>Percilchofe CPA LLC</b> (AICPA-accredited) and are <b>not included</b> in the platform price.</p>
       <p>• Prices are in USD and exclude any applicable taxes/GST.</p>
-      <p>• This quotation is valid for 30 days from the date above.</p>
-      <p>• Deployment: managed cloud or self-hosted; details confirmed at kickoff.</p>
+      <p>• This quotation is valid for 30 days from the date above. Deployment (managed cloud or self-hosted) confirmed at kickoff.</p>
     </div>
   </div>
 
   <div class="foot">
     <div class="sig">Accepted by (Kahu Logic): ______________________  &nbsp; Date: ____________</div>
-    <a class="cta" href="mailto:hello@compliboss.com?subject=Accept%20Quote%20CB-2026-KL-001">Accept &amp; get started</a>
+    <a class="cta" href="mailto:hello@compliboss.com?subject=Accept%20Quote%20CB-2026-KL-232">Accept &amp; get started</a>
   </div>
 
 </div>
